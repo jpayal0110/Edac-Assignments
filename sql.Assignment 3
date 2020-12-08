@@ -1,0 +1,30 @@
+create database department;
+show databases;
+create table Department(dept_id int not null, dept_name varchar(30),constraint pk_Department primary key (dept_id));
+insert into Department values(1, 'Fianance');
+insert into Department values(2, 'Training');
+insert into Department values(3, 'Marketing');
+select * from Department;
+desc department;
+
+desc Employee;
+create table Employee(emp_id int not null primary key, emp_name varchar(20), dept_id int, salary int, manager int, constraint fk_Employee foreign key (dept_id) references Department(dept_id));
+insert into Employee values(1, 'Arun', 1,8000,4);
+insert into Employee values(2, 'Kiran', 2,7000,1);
+insert into Employee values(3, 'Scott', 1, 3000,1);
+insert into Employee values(4, 'max', 2, 9000,null);
+insert into Employee values(5, 'Jack', 2, 8000,4);
+insert into Employee values(6, 'king', null, 6000,1);
+select * from Employee;
+
+
+select * from Employee order by salary asc;
+select * from Employee order by emp_name desc;
+
+select *, sum(salary) from employee group by dept_id;
+select dept_id, sum(salary) from employee group by dept_id>17000;
+select dept_id, sum(salary) from employee where sum(salary)>17000 group by dept_id;
+select dept_id, sum(salary) from employee group by dept_id having sum(salary)>18000;
+select dept_id, sum(salary) from employee group by dept_id having sum(salary)<20000;
+
+
