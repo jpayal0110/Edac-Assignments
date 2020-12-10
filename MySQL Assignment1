@@ -1,0 +1,114 @@
+use sql_asg5;
+Create table EMP (EMPNO int(4) not null, ENAME varchar(30) not null, JOB varchar(10), MGR int(4), HIREDATE date, SAL int, DEPTNO int(2) ); 
+Insert into EMP  values(1000,  'Manish' , 'SALESMAN', 1003,  '2020-02-18', 600,  30) ;
+Insert into EMP values(1001,  'Manoj' , 'SALESMAN', 1003,  '2018-02-18', 600,  30) ;
+Insert into EMP values(1002 , 'Ashish', 'SALESMAN',1003 , '2013-02-18',  750,  30 );
+Insert into EMP values(1004,  'Rekha', 'ANALYST', 1006 , '2001-02-18', 3000,  10);
+Insert into EMP values(1005 , 'Sachin', 'ANALYST', 1006 ,  '2019-02-18', 3000, 10 );
+Insert into EMP  values(1006,  'Pooja',  'MANAGER',null , '2000-02-18',6000, 10 );
+
+select * from emp;
+
+Create table dept (dno int(4) not null, dname varchar(10) not null,area varchar(30));
+Insert into dept values(10,'Store','Mumbai');
+Insert into dept values(20,'Purchase','Mumbai');
+Insert into dept values(30,'Store', 'Delhi');
+Insert into dept values(40,'Marketing','Pune');
+Insert into dept values(50,'Finance','Delhi');
+Insert into dept values(60,'Accounts','Mumbai');
+select * from dept;
+drop procedure pro4;
+
+
+delimiter $$
+create procedure pro1(in a int , b int)
+begin
+declare sum, sub, mul,divi int;
+set sum = a+b;
+select sum;
+set sub = a-b;
+select sub;
+set mul = a*b;
+select mul;
+set divi =a/b;
+select divi;
+end $$
+call pro1(2,4);
+
+/*--------------------------------------------------------*/
+
+delimiter $$
+create procedure pro2(in str varchar(30))
+begin
+select reverse(str);
+end $$
+call pro2('DATABASE');
+/*--------------------------------------------------------*/
+delimiter $$
+create procedure pro3(in num int)
+begin
+select distinct sal, empno, ename from emp order by sal desc limit num;
+end $$
+
+call pro3(5);
+/*--------------------------------------------------------*/
+
+delimiter $$
+create procedure pro4()
+begin
+create table emp_test( emp_id int, e_name varchar(10), e_joining_date date);
+select * from emp_test;
+desc emp_test;
+end $$
+call pro4();
+
+drop table emp_test;
+drop procedure pro4;
+
+/*--------------------------------------------------------*/
+
+delimiter ##
+create procedure pro5()
+begin
+insert into dept values(60, 'Education', 'Pune');
+select * from dept;
+end ##
+call pro5();
+
+drop procedure pro5;
+
+/*--------------------------------------------------------*/
+
+ delimiter ##
+create procedure pro6()
+begin
+declare num, square, c int;
+set num =4;
+set square = num*num;
+set c = num * num* num;
+select num, square, c;
+end##
+
+call pro6(); 
+/*--------------------------------------------------------*/
+
+delimiter ##
+create procedure pro7(out var int)
+begin
+declare num int;
+set num =5;
+set var= num;
+select var;
+end ##
+call pro7(@var)
+/*--------------------------------------------------------*/
+
+delimiter ##
+create procedure pro8(inout var int)
+begin
+set var = var * var ;
+end ##
+set @var = 5;
+call pro8(@var)
+select @var;
+
