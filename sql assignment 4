@@ -1,0 +1,40 @@
+show databases;
+create table employee1 as select * from employee;
+select * from employee1;
+create table department1 as select * from department;
+select * from department1;
+desc department1;
+alter table department1 add primary key(dept_id);
+alter table employee1 add constraint fk foreign key (dept_id) references Department(dept_id);
+alter table employee1 add primary key(emp_id);
+
+select dept_name, emp_name from employee1, department1 where employee1.dept_id=department1.dept_id; 
+select * from employee1, department1 where employee1.dept_id = department1.dept_id;
+select dept_id, sum(salary) from employee1 group by dept_id;
+select dept_name, emp_name from employee1 left outer join department1 on employee1.dept_id = department1.dept_id;
+select dept_name, emp_name from employee1 right outer join department1 on employee1.dept_id = department1.dept_id;
+select emp_name, manager from employee1;
+select emp_name, dept_name from employee1, department1 where employee1.dept_id = department1.dept_id;
+
+create table emp1(emp_no int , emp_name char);
+create table emp2(emp_no int, emp_name char);
+insert into emp1 values(1,'A');
+insert into emp1 values(1,'B');
+insert into emp1 values(1,'C');
+drop table emp2;
+
+insert into emp2 values(1,'A');
+insert into emp2 values(2,'B');
+insert into emp2 values(4,'D');
+insert into emp2 values(5,'E');
+
+
+
+select * from employee1 where salary = (select salary from employee1 where emp_name = 'Arun');
+-- select employee belonging to same dept as 'jack'
+select * from employee1 where dept_id = (select dept_id from employee1 where emp_name= 'jack');
+-- select name of employee havin lowest salary.
+select * from employee1 where salary = (select min(salary) from employee1 );
+-- update salary =15000 of employees belonging to same dept as 'Max'.
+update employee1 set salary = 15000 where dept_id = (select dept_id from department1 where dept_id = 2); 
+select * from employee1 ;
