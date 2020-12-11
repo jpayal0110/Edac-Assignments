@@ -1,0 +1,104 @@
+use sql_asg5;
+create table new_emp as select * from emp;
+select * from new_emp;
+
+create table new_dept as select * from dept;
+select * from new_dept;
+
+-- ------------------------------------------------------------------------------------------------
+
+delimiter $$
+create function fun1(var1 int) 
+returns int
+begin 
+declare var2 int default 1;
+factor:loop
+if(var1 = 0)
+then 
+return var2;
+leave factor;
+end if;
+set var2 =  var2* var1;
+set var1 = var1 - 1;
+end loop;
+END $$
+select fun1(5);
+
+-- ------------------------------------------------------------------------------------------------
+
+delimiter $$
+create function fun2(var1 int) returns varchar(20)
+begin
+declare var2 int default 2;
+prime: loop
+if(var2 > var1)
+then
+return "Prime Number";
+leave prime;
+elseif(var1 % var2 = 0 && var1 !=var2)
+then
+return "NOT PRIME";
+leave prime;
+else
+set var2 =  var2 +1;
+end if;
+end loop;
+end $$
+select fun2(13);
+drop function fun2;
+
+-- ------------------------------------------------------------------------------------------------
+
+delimiter $$
+create function fun4(dept_no int) returns varchar(10)
+begin
+update new_emp set sal =sal + (0.01 * sal) where deptno = dept_no;
+return 'updated';
+end $$
+select fun4(30);
+select * from new_emp;
+
+-- ------------------------------------------------------------------------------------------------
+
+delimiter $$
+create function user_annual_comp(p_no int, p_comm int) returns int
+begin
+declare salary int ;
+set salary = (select sal from new_emp where empno = p_no);
+return (salary + p_comm)*12;
+end $$
+select user_annual_comp(1000 ,12);
+drop function user_annual_comp;
+
+-- ------------------------------------------------------------------------------------------------
+
+delimiter $$ 
+create procedure USER_QUERY_EMP (in p_myeno int,out p_myjob varchar(20),out p_mysal int) 
+begin set p_myjob= (select ename from new_emp where deptno=p_myeno); 
+set p_mysal= (select sal from new_emp where deptno=p_myeno); 
+end $$ 
+drop procedure USER_QUERY_EMP; 
+call USER_QUERY_EMP(2,@job,@salary); 
+select @job,@salary; 
+
+-- --------------------------------------------------------------------------------
+
+delimiter $$ 
+create procedure pro(inout str varchar(30)) 
+begin 
+set str=reverse(str); 
+end $$ 
+set @str="Database"; 
+call pro(@str);
+select @str; 
+
+-- --------------------------------------------------------------------------------
+
+delimiter $$
+create procedure tabledetails()
+begin
+show tables;
+select * from emp;
+end$$
+call tabledetails();
+drop  procedure tabledetails;
