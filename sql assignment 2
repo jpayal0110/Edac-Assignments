@@ -1,0 +1,65 @@
+create table  Publishers(pub_id int primary key, pa_name varchar(30), email varchar(30) unique, phone varchar(30));
+create table subjects(sub_id varchar(5) primary key, sname varchar(30));
+create table authors(a_id int primary key,a_name varchar(20), email varchar(50) unique, phone varchar(30));
+
+create table titles(title_id int primary key, title varchar(30), pub_id int, sub_id varchar(5), pub_date date, cover char(1) check(cover in ('P','H', 'p','h')), price int,
+constraint titles_pub_id_fk foreign key(pub_id) references publishers(pub_id),
+constraint titles_sub_id_fk foreign key(sub_id) references subjects(sub_id));
+
+create table titleauthors(title_id int, a_id int, importance int, primary key(title_id), 
+constraint titlesauthors_title_id_fk foreign key(title_id)references titles(title_id),
+constraint titlesauthors_auth_id_fk foreign key (a_id) references authors(a_id));
+
+
+create table subjects_backup( sub_id varchar(5) primary key, sname varchar(30));
+
+insert into subjects values('ORA', 'ORACLE DATABASE 10g');
+insert into subjects values('JAVA', 'JAVA LANGUAGE');
+insert into subjects values('JEE', 'JAVA ENTERPRISE EDITION');
+insert into subjects values('VB', 'VISUAL BASIC.NET');
+insert into subjects values('ASP', 'ASP.NET');
+
+insert into publishers values('1', 'WILLEY','WDT@VSNL.NET', '91-11-23260877');
+insert into publishers values (2,'WROX','INFO@WROX.COM', NULL);
+insert into publishers values (3,'TATA MCGRAW-HILL','FEEDBACK@TATAMCGRAWHILL.COM','91-11-33333322');
+insert into publishers values (4,'TECHMEDIA','BOOKS@TECHMEDIA.COM','91-11-33257660');
+
+insert into authors VALUES (101, 'HERBERT SCHILD','HERBERT@YAHOO.COM',NULL);
+insert into authors VALUES (102, 'JAMES GOODWILL','GOODWILL@HOTMAIL.COM',NULL);
+insert into authors VALUES (103, 'DAVAID HUNTER','HUNTER@HOTMAIL.COM',NULL);
+insert into authors VALUES (104, 'STEPHEN WALTHER','WALTHER@GMAIL.COM',NULL);
+insert into authors VALUES (105, 'KEVIN LONEY','LONEY@ORACLE.COM',NULL);
+insert into authors VALUES (106, 'ED. ROMANS','ROMANS@THESERVERSIDE.COM',NULL);
+
+
+
+insert into titles VALUES (1001,'ASP.NET UNLEASHED',4,'ASP','12-11-11','P',540);
+insert into titles VALUES (1002,'ORACLE10G COMP. REF.',3,'ORA','1-6-05','P',575);
+insert into titles VALUES (1003,'MASTERING EJB',1,'JEE','3-2-05','P',475);
+insert into titles VALUES (1004,'JAVA COMP. REF',3,'JAVA','3-4-05','P',499);
+insert into titles VALUES (1005,'PRO. VB.NET',2,'VB','15-6-05','P',450);
+
+INSERT INTO TITLEAUTHORS VALUES (1001,104,1);
+INSERT INTO TITLEAUTHORS VALUES (1002,105,1);
+INSERT INTO TITLEAUTHORS VALUES (1003,106,1);
+INSERT INTO TITLEAUTHORS VALUES (1004,101,1);
+INSERT INTO TITLEAUTHORS VALUES (1005,103,1);
+
+select * from subjects where sname like 'ORACLE %';
+select * from subjects where sname like 'j%';
+select * from subjects where sname like '%.net%';
+select * from subjects where sname like '%er';
+select * from subjects where sname like '%hill%';
+
+select * from titles where price< 500;
+-- select * from titles where pub_date
+select * from subjects where sub_id= 'java' or sub_id = 'jee';
+select * from authors where  a_id > 103;
+select * from titles where title_id = 101 or price > 400;
+
+select * from publishers where pa_name in('TECHMEDIA','WROX');
+
+select max(price) from titles;
+select avg(importance) from titleauthors;
+select count(a_id) from authors;
+select sum(price) from titles;
